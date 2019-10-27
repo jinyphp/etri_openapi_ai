@@ -9,3 +9,17 @@
  */
 
 namespace Etri\OpenAi;
+
+if(function_exists("accesskey")) {
+    function accesskey()
+    {
+        $path = "access_key.php";
+        for($i=0;$i<5;$i++) {
+            if(file_exists($path)){
+                return include $path;
+            }
+
+            $path = "../".$path;
+        }
+    }
+}

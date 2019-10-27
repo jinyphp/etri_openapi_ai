@@ -1,3 +1,3 @@
 <?php
 // 발급받은 키를 입력하세요
-return "0dd87d06-985f-4281-b4c8-79f27c05034e";
+return "ACCESS_KEY";

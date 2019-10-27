@@ -1,6 +1,10 @@
 <?php
-
-namespace Etri\OpenAi;
+/**
+ * Etri OpenAI package
+ * hojinlee(infohojin@naver.com)
+ * https://github.com/jinyphp/etri_openapi_ai
+ */
+namespace Etri\OpenAi\Text;
 
 class Request
 {
