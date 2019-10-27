@@ -64,9 +64,38 @@ class NLU
         return $this->excute();
     }
 
-    private function excute()
+    private function excute($cache=true)
     {
-        return $this->curl($this->Request, self::API_URL);
+        if($cache) {
+            // 케쉬 확인
+            $path = "../../../../cache";
+            if( !is_dir($path)) mkdir($path);
+
+            $path .= DIRECTORY_SEPARATOR."Etri";
+            if( !is_dir($path)) mkdir($path);
+
+            $path .= DIRECTORY_SEPARATOR."NLU";
+            if( !is_dir($path)) mkdir($path);
+
+            $hash = sha1($this->Request->argument["text"]);
+
+            $path .= DIRECTORY_SEPARATOR.$hash[0].$hash[0];
+            if( !is_dir($path)) mkdir($path);
+             
+
+            if(file_exists($path.DIRECTORY_SEPARATOR.$hash.".json")) {
+                return file_get_contents($path.DIRECTORY_SEPARATOR.$hash.".json");
+            } else {
+                $result = $this->curl($this->Request, self::API_URL);
+                file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
+                return $result;
+            } 
+        } else {
+            // 비활성 캐쉬
+            $result = $this->curl($this->Request, self::API_URL);
+            file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
+            return $result;
+        }               
     }
 
     private function curl($request, $url)

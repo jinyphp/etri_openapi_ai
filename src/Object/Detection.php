@@ -14,7 +14,7 @@ class Detection
     public function __construct($key)
     {
         $this->Request = new \Etri\OpenAi\Object\Request($key);
-        echo __CLASS__;
+        // echo __CLASS__;
     }
 
     public function setFile($filename)
@@ -23,9 +23,39 @@ class Detection
         return $this;
     }
 
-    public function execute()
+    public function execute($cache=true)
     {
-        return $this->curl($this->Request, self::API_URL);
+        // return $this->curl($this->Request, self::API_URL);
+        if($cache) {
+            // 케쉬 확인
+            $path = "../../../../cache";
+            if( !is_dir($path)) mkdir($path);
+
+            $path .= DIRECTORY_SEPARATOR."Etri";
+            if( !is_dir($path)) mkdir($path);
+
+            $path .= DIRECTORY_SEPARATOR."Object";
+            if( !is_dir($path)) mkdir($path);
+
+            $hash = sha1($this->Request->argument["file"]);
+
+            $path .= DIRECTORY_SEPARATOR.$hash[0].$hash[0];
+            if( !is_dir($path)) mkdir($path);
+             
+
+            if(file_exists($path.DIRECTORY_SEPARATOR.$hash.".json")) {
+                return file_get_contents($path.DIRECTORY_SEPARATOR.$hash.".json");
+            } else {
+                $result = $this->curl($this->Request, self::API_URL);
+                file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
+                return $result;
+            } 
+        } else {
+            // 비활성 캐쉬
+            $result = $this->curl($this->Request, self::API_URL);
+            file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
+            return $result;
+        }
     }
 
     private function curl($request, $url)
