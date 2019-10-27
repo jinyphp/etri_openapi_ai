@@ -64,6 +64,7 @@ class NLU
         return $this->excute();
     }
 
+    private $result;
     private function excute($cache=true)
     {
         if($cache) {
@@ -84,17 +85,21 @@ class NLU
              
 
             if(file_exists($path.DIRECTORY_SEPARATOR.$hash.".json")) {
-                return file_get_contents($path.DIRECTORY_SEPARATOR.$hash.".json");
+                $json = file_get_contents($path.DIRECTORY_SEPARATOR.$hash.".json");
+                $this->result = json_decode($json);
+                return $this->result;
             } else {
                 $result = $this->curl($this->Request, self::API_URL);
                 file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
-                return $result;
+                $this->result = json_decode($result);
+                return $this->result;
             } 
         } else {
             // 비활성 캐쉬
             $result = $this->curl($this->Request, self::API_URL);
             file_put_contents($path.DIRECTORY_SEPARATOR.$hash.".json",$result);
-            return $result;
+            $this->result = json_decode($result);
+            return $this->result;
         }               
     }
 
