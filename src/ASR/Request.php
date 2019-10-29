@@ -15,6 +15,7 @@ class Request
         $this->access_key = $key;
     }
 
+    // 전달 인수 설정
     public function setArgument($code, $filename)
     {
         if(file_exists($filename)) {
@@ -31,4 +32,8 @@ class Request
         
         
     }
+
+    /**
+     * 
+     */
 }

@@ -100,5 +100,7 @@ class Detection
         return $server_output;
     }
 
-
+    /**
+     * 
+     */
 }

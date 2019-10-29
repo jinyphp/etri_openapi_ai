@@ -150,4 +150,7 @@ class Recognition
         return $server_output;
     }
 
+    /**
+     * 
+     */
 }

@@ -15,6 +15,7 @@ class Request
         $this->access_key = $key;
     }
 
+    // 전달 인수 설정
     public function setArgument($code, $text)
     {
         $this->argument = array (
@@ -22,4 +23,8 @@ class Request
             "text" => $text
         );
     }
+
+    /**
+     * 
+     */
 }
